@@ -1,6 +1,8 @@
 Tweerex
 ============
 
+CAUTION: Tweerex is a tool I build very quickly one afternoon. So don't expect to much (yet).
+
 Tweerex is a tool you can run to fetch the public twitterfeed and match incomming tweets agains a local regex db.
 Just have a browse trough the code. Fairly easy to use I think.
 
