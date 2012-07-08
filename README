@@ -1,0 +1,11 @@
+Tweerex
+============
+
+Tweerex is a tool you can run to fetch the public twitterfeed and match incomming tweets agains a local regex db.
+Just have a browse trough the code. Fairly easy to use I think.
+Added a few simple regex examples:
+1. Search for CVV codes in tweets
+2. Look for the word vulnerability
+3. Look for tweets containing the text .nse. This probably contains a link to a nmap script
+
+Please do share interesting regexes ;) - use the git repo or http://www.damnsecure.org
