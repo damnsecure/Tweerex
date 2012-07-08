@@ -1,0 +1,18 @@
+<item>
+    <regex>cvv</regex>
+    <tags>
+        <tag>Creditcard CVV number</tag>
+    </tags>
+</item>
+<item>
+    <regex>[V|v]ulnerability</regex>
+    <tags>
+        <tag>Vulnerability</tag>
+    </tags>
+</item>
+<item>
+    <regex>\.nse</regex>
+    <tags>
+        <tag>nmap script</tag>
+    </tags>
+</item>
