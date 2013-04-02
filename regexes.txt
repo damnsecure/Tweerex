@@ -1,18 +1,11 @@
-<item>
-    <regex>cvv</regex>
-    <tags>
-        <tag>Creditcard CVV number</tag>
-    </tags>
-</item>
-<item>
-    <regex>[V|v]ulnerability</regex>
-    <tags>
-        <tag>Vulnerability</tag>
-    </tags>
-</item>
-<item>
-    <regex>\.nse</regex>
-    <tags>
-        <tag>nmap script</tag>
-    </tags>
-</item>
+cvv 									# Find cvv (part of cc)
+[V|v]ulnerability 						# Find mention of word vulnerability
+[E|e]xploit 							# Find mention of word exploit
+\.nse 									# Find NSE (nmap) scripts
+[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}	# Email
+[^<A-F\d/]([A-F\d]{32})[^A-F\d]			# Hash
+(AIza.{35})								# Google API Key
+[H|h]acked [B|b]y						# Hacked by
+[B|b]ank ?[C|c]ard						# Bank card
+[M|m]aster ?[C|c]ard					# Master Card
+[D|d]ebit ?[C|c]ard						# Debit card

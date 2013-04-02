@@ -1,10 +1,7 @@
 Tweerex
 ============
 
-CAUTION: Tweerex is a tool I build very quickly one afternoon. So don't expect to much (yet).
-
-Tweerex is a tool you can run to fetch the public twitterfeed and match incomming tweets agains a local regex db.
-Just have a browse trough the code. Fairly easy to use I think.
+Tweerex is a tool that applies regexes to the public twitter feed.
 
 REQUIRED:
 ----------------------------------------------------------------------
@@ -12,10 +9,5 @@ tweetstream  -  http://pypi.python.org/pypi/tweetstream
 anyjson      -  http://pypi.python.org/pypi/anyjson/0.2.0#downloads
 ----------------------------------------------------------------------
 
-
-Added a few simple regex examples:
-1. Search for CVV codes in tweets
-2. Look for the word vulnerability
-3. Look for tweets containing the text .nse. This probably contains a link to a nmap script
-
-Please do share interesting regexes ;) - use the git repo or http://www.damnsecure.org
+A few example/usefull regexes are provided in regexes.txt. You can expand this file.
+Please do share interesting regexes via github, twitter or contact me via http://www.damnsecure.org

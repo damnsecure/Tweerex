@@ -1,101 +1,57 @@
+#!/usr/bin/python
+
+from sys import stdout
 import tweetstream, pprint, string, re
-from BeautifulSoup import *
 
-regexes_file = file("regexes.txt", "r");
+print ">> Name: Tweerex"
+print ">> Dev: Ruben Thijssen (@rubenthijssen)"
+print ">> Ver: 0.2"
 
-bs = BeautifulSoup(regexes_file)
-
-class Matcher:
-    string_regex = None
-    regex = None
-    tags = []
-   
-    def __init__(self, regex):
-        self.string_regex = regex.strip()
-        self.regex = re.compile(regex.strip())
-        self.tags = []
-
-    def get_str_regex(self):
-        return self.string_regex
-
-    def get_regex(self):
-        return self.regex
-
-    def set_tags(self, tags):    
-        self.tags = tags
-
-    def get_tags(self):
-        return self.tags
-
+# Load all the regexes
+# Format: <regex> # <desc>
 regexes = []
+for line in open('regexes.txt'):
+	regex = line.split("#")
+	regexes.append(regex)
 
-for t in bs.findAll("item"):
-    matcher = None
-    tmp = re.search(r"<regex>(.*?)</regex>", str(t))
-    if tmp:
-        matcher = Matcher(tmp.group(1))
+print "[*] - Regexes successfully loaded"
 
-    if t.tags:
-        tags = t.tags.findAll("tag")
-        obj = []
-        for tag in tags:
-            obj.append(tag)
-
-        matcher.set_tags(obj)
-
-        regexes.append(matcher)
-
-counter = 0
+# Loading login credentials
 try:
-    print "[*] - Lets see what this baby can do"
-    stream = tweetstream.SampleStream("<username>", "<password>")
-    for tweet in stream:
-        try:
-            if counter % 10000 is 0:
-                regexes = []
-                regexes_file = file("regexes.txt", "r");
+	login_file = open("login", "r").readlines()
+	username = login_file[0].strip() #First line in 'login' has username
+	password = login_file[1].strip() #Second line in 'login' has password
+	print "[*] - Login credentials found"
+except:
+	print "[!] - Could not read login file make sure it exists and has the right format..."
+	quit()
 
-                bs = BeautifulSoup(regexes_file)
-                for t in bs.findAll("item"):
-                    matcher = None
-                    tmp = re.search(r"<regex>(.*?)</regex>", str(t))
-                    if tmp:
-                        matcher = Matcher(tmp.group(1))
+# Logging into the twitter API
+try:
+	print "[*] - Logging in " + username + ":****" 
+	stream = tweetstream.SampleStream(username, password)
+except:
+	print "[!] - Could not login..."
+	quit()
 
-                    if matcher:
-                        tags = t.findAll("tag")
-                        obj = []
-                        for tag in tags:
-                            obj.append(tag)
+# Read twitter public stream and look for matches
+print "[*] - Lets see what this baby can do"
+try:
+	for tweet in stream:
+		for regex in regexes:
+			if tweet.has_key("text"):
+				match = re.search(regex[0].strip(), tweet["text"])
 
-                        matcher.set_tags(obj)
+				if match:
+					if tweet.has_key("user") and tweet["user"].has_key("screen_name"):
+						print tweet["user"]["screen_name"] + " - " + tweet["text"] + "\t\t<< " + regex[1].strip()
+					else:
+						print "@{unknown} - " + tweet["text"] + "\t\t<< " + regex[1].strip()
 
-                        regexes.append(matcher)
-                counter = 0
-        except Exception, e:
-            print e
-            counter = 0
-
-        for regex in regexes:
-            text_match = False
-            if tweet.has_key("text"):
-                match = re.search(regex.get_regex(), tweet["text"])
-                if match and "5555555555555555" not in tweet["text"]: #Nasty hack because long strings containing 5555 created heaps of false positives. Don't think this will affect our normal analysis flow...
-                    print "-" * 128
-                    if tweet.has_key("user") and tweet["user"].has_key("screen_name"):
-                        print tweet["user"]["screen_name"] + " - " + tweet["text"]
-                    else:
-                        print "@{unknown} - " + tweet["text"]
-
-                    tags = ""
-                    for t in regex.get_tags():
-                        tags += " " + str(t)
-                
-                    print "Matching: " + regex.get_str_regex()
-                    print "Tags:" + tags
-                    print "-" * 128
-        counter += 1
 except KeyboardInterrupt:
-    stream.close() 
+	print "[*] Shutting down..."
+	stream.close()
 except tweetstream.ConnectionError, e:
-    print "Disconnected from twitter. Reason:", e.reason
+	print "Disconnected from twitter. Reason:", e.reason
+except Exception, e:
+	print "[!] - Unknown excpetion occured, shutting down.", e
