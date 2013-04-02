@@ -1,6 +1,12 @@
 Tweerex
 ============
 
+v0.2
+Massive code cleanup. Code is finaly readable
+Code is not outputting useless chars into your console anymore.
+XML structure has been removed from the regexes file, making it easier to add and remove regexes.
+Creditcard regexes have been removed, caused too many false-positives
+
 v0.1
 Very messy piece of code allowing you to regex tweets.
 Not a lot to it. Hopefully this tool will grow in the future to something decent. 
